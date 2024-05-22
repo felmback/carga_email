@@ -1,28 +1,20 @@
-from jinja2 import Environment, FileSystemLoader
-from extract_dados import dados
-from weasyprint import HTML
+import pandas as pd
+from jinja2 import Environment
+import datetime
 
-def generate_pdf(dataframe):
-    # Carregando o template Jinja
-    env = Environment(loader=FileSystemLoader('.'))
-    template = env.get_template("template.html")
+df = pd.read_excel('dados.xlsx')
 
-    # Renderizando o template com os dados do DataFrame
-    rendered_html = template.render(data=dataframe)
+data = datetime.date.today()
+txt_html= """
+<h1> Contrele de carga GCP </h1>
+<p> Volume das cargas executada no GCP na data {{data}}</p>
 
-    # Convertendo HTML renderizado em PDF usando WeasyPrint
-    pdf = dataframe.to_html()
+{{tabela}}
+"""
 
-    return pdf
+tbl_html = df.to_html(index=False)
 
-# Exemplo de uso
-if __name__ == "__main__":
-    # Supondo que você tenha um DataFrame chamado df
-    
-
-    # Gerando o PDF
-    pdf_output = generate_pdf(dados())
-
-    # Salvando o PDF
-    with open("output.pdf", "wb") as f:
-        f.write(pdf_output)
+tamplate = Environment().from_string(txt_html)
+html = tamplate.render(tabela=tbl_html, data=data)
+with open('tabela.html', 'w') as pagina:
+    pagina.write(html)
