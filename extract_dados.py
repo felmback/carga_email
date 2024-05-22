@@ -21,8 +21,6 @@ def dados():
     query_job = client.query(query)    
     df = query_job.to_dataframe()
     return df
-
-
 df = dados()
 
-print(df)
+
