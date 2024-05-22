@@ -11,7 +11,7 @@ def generate_pdf(dataframe):
     rendered_html = template.render(data=dataframe)
 
     # Convertendo HTML renderizado em PDF usando WeasyPrint
-    pdf = HTML(string=rendered_html).write_pdf()
+    pdf = dataframe.to_html()
 
     return pdf
 
